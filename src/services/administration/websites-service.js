@@ -3,17 +3,21 @@ const config = require('../../common/configManager');
 const orm = require('../../common/orm');
 const alias = require('../../common/alias');
 const errorManager = require('../../common/errors');
-const validation = require('./validation-service');
+const queryManager = require('../../common/queryManager');
 
 const clientModel = orm.getTable("ADMINISTRATION", "ADMIN_CLIENT");
-const addressModel = orm.getTable("ADMINISTRATION", "ADDRESS");
+const websiteModel = orm.getTable("ADMINISTRATION", "WEBSITE");
+const clientWebsiteModel = orm.getTable("ADMINISTRATION", "CLIENT_WEBSITE");
 
-exports.getById = (idClient, clientToken, res) => {
+const mailManager = require('../../common/mailManager');
+
+exports.getById = (idClient, idWebsite, clientToken, res) => {
   var attributes = {
-    attributes : alias.clientAttributes,
-    include : alias.addressInclude,
-    where : {
-      ID_CLIENT : idClient
+    attributes: alias.clientAttributes,
+    include: alias.addressInclude,
+    where: {
+      ID_CLIENT: idClient,
+      ID_WEBSITE: idWebsite,
     }
   }
   if (idClient != clientToken.ID_CLIENT)
@@ -21,28 +25,25 @@ exports.getById = (idClient, clientToken, res) => {
   orm.find(clientModel, res, attributes);
 }
 
-exports.create = (req, res) => {
-  delete req.ID_CLIENT;
-  req.IS_VERIFIED = false;
-  req.IS_ENABLE = true;
-  if (req.ADDRESS == undefined)
-    req.sendStatus(401);
-  orm.transaction(clientModel, res, function(t) {
-    return orm.create(clientModel, res, req, t)
-    .then(function (client) {
-      req.ADDRESS.ID_CLIENT = client.ID_CLIENT;
-      return orm.create(addressModel, res, req.ADDRESS, t).then(function () {
-        validation.generate(client.EMAIL_ADDRESS);
-      })
+exports.create = (req, res, clientToken) => {
+  delete req.ID_WEBSITE;
+  delete req.DATE_CREATION;
+  delete req.DATE_UPDATE;
+  delete req.DATE_ACTIVE_UPDATE;
+  req.IS_ACTIVE = false;
+  orm.transaction(websiteModel, res, function(t) {
+    return orm.create(websiteModel, res, req, t).then(function (website) {
+      var content = {
+        ID_CLIENT : clientToken.ID_CLIENT,
+        ID_WEBSITE : website.ID_WEBSITE
+      };
+      return orm.create(clientWebsiteModel, res, content, t);
     });
   });
 }
 
 exports.update = (content, idClient, clientToken, res) => {
   delete content.ID_CLIENT;
-  delete content.IS_VERIFIED;
-  delete content.IS_ENABLE;
-  delete content.EMAIL_ADDRESS;
   if (idClient != clientToken.ID_CLIENT)
     res.sendStatus(401);
   else {
@@ -56,14 +57,7 @@ exports.update = (content, idClient, clientToken, res) => {
 }
 
 exports.delete = (idClient, clientToken, res) => {
-  var content = {
-    'IS_ENABLE': false,
-    'NAME': '',
-    'LASTNAME': '',
-    'EMAIL_ADDRESS': '',
-    'HASH_PASSWORD': '',
-  }
-  orm.update(clientModel, content, undefined, { where : {'ID_CLIENT' : clientToken.ID_CLIENT }});
+  orm.delete(clientModel, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT }});
   this.logout(res);
 }
 
@@ -94,7 +88,7 @@ function tokenGenerator(result, res) {
 
 exports.authentification = (req, res) => {
   this.checkAuthentication(req.body, res).then(function(result) {
-    if (!result || result.IS_ENABLE == false || result.IS_VERIFIED == false)
+    if (!result)
       res.status(403).send();
     else
       tokenGenerator(result, res);

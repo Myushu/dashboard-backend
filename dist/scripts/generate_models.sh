@@ -39,4 +39,4 @@ init_database() {
 init_database
 clear_models
 generate_models
-apply_patch
+# apply_patch

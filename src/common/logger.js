@@ -19,7 +19,7 @@ logger.stream = {
 logger.format = function (tokens, req, res) {
   var user = 'not connected'
   if (req.user)
-    user = req.user.userId
+    user = req.user.ID_CLIENT;
   return [
     '\nmethod:      ', tokens.method(req, res),
     '\nurl:         ', tokens.url(req, res),

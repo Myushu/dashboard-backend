@@ -1,4 +1,7 @@
- const service = require('../../services/administration/clients-service');
+const service = require('../../services/administration/clients-service');
+const logger = require('../../common/logger');
+
+logger.debug('loading controller : CLIENTS')
 
 module.exports = function(app) {
     // Get a client
@@ -28,6 +31,6 @@ module.exports = function(app) {
 
     //Log out
     app.post('/clients/logout', (req, res) => {
-      service.logout(req, res);
+      service.logout(res);
     });
 }

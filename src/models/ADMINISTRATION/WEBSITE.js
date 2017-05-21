@@ -5,7 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     ID_WEBSITE: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     NAME: {
       type: DataTypes.STRING,
@@ -14,6 +15,19 @@ module.exports = function(sequelize, DataTypes) {
     URL: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    DATE_CREATION: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    DATE_UPDATE: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    DATE_ACTIVE_UPDATE: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
     IS_ACTIVE: {
       type: DataTypes.BOOLEAN,

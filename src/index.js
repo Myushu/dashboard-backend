@@ -1,5 +1,3 @@
-// SHOULD NEVER DELETE client
-//
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -37,6 +35,8 @@ require('./controllers/home-controller')(app);
 
 // administration
 require('./controllers/administration/clients-controller')(app);
+require('./controllers/administration/websites-controller')(app);
+require('./controllers/administration/validation-controller')(app);
 
 // Dashboard
 

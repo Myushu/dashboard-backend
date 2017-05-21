@@ -9,6 +9,15 @@
       "password" : "root"
     }
   },
+  "mail" : {
+    "address" : "no-reply@antmine.io",
+    "password" : "JJbp724NJNzpws",
+    "smtp" : {
+      "host" : "mail.gandi.net",
+      "port" : 465,
+      "secure" : true
+    }
+  },
   "redis" : {
     "hostname" : "localhost",
     "port": 6379
@@ -21,6 +30,7 @@
   },
   "server" : {
     "port" : 3000,
+    "url" : "http://localhost",
     "cors" : ["http://localhost:4200"]
   },
   "client" : {

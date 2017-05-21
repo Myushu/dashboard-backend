@@ -27,6 +27,16 @@ module.exports = function(sequelize, DataTypes) {
     HASH_PASSWORD: {
       type: "VARBINARY(255)",
       allowNull: false
+    },
+    IS_VERIFIED: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: "0"
+    },
+    IS_ENABLE: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: "1"
     }
   }, {
     tableName: 'ADMIN_CLIENT',
