@@ -43,6 +43,12 @@ exports.map = [
     code : 008,
     statusCode : 400
   },
+  {
+    name : 'unauthorized',
+    message : 'unauthorized',
+    code : 009,
+    statusCode : 401,
+  },
   // Database Error
   {
     name : 'SequelizeDatabaseError',

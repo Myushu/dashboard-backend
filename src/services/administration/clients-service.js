@@ -8,16 +8,14 @@ const validation = require('./validation-service');
 const clientModel = orm.getTable("ADMINISTRATION", "ADMIN_CLIENT");
 const addressModel = orm.getTable("ADMINISTRATION", "ADDRESS");
 
-exports.getById = (idClient, clientToken, res) => {
+exports.getById = (clientToken, res) => {
   var attributes = {
     attributes : alias.clientAttributes,
     include : alias.addressInclude,
     where : {
-      ID_CLIENT : idClient
+      ID_CLIENT : clientToken.ID_CLIENT
     }
   }
-  if (idClient != clientToken.ID_CLIENT)
-    res.sendStatus(401);
   orm.find(clientModel, res, attributes);
 }
 
@@ -38,24 +36,20 @@ exports.create = (req, res) => {
   });
 }
 
-exports.update = (content, idClient, clientToken, res) => {
+exports.update = (content, clientToken, res) => {
   delete content.ID_CLIENT;
   delete content.IS_VERIFIED;
   delete content.IS_ENABLE;
   delete content.EMAIL_ADDRESS;
-  if (idClient != clientToken.ID_CLIENT)
-    res.sendStatus(401);
-  else {
-    orm.transaction(clientModel, res, function(t) {
-      return orm.update(clientModel, content, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT}, transaction : t})
+  orm.transaction(clientModel, res, function(t) {
+    return orm.update(clientModel, content, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT}, transaction : t})
       .then(function () {
         return orm.update(addressModel, content.ADDRESS, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT}, transaction : t});
       });
-    });
-  }
+  });
 }
 
-exports.delete = (idClient, clientToken, res) => {
+exports.delete = (clientToken, res) => {
   var content = {
     'IS_ENABLE': false,
     'NAME': '',

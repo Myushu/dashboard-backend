@@ -31,7 +31,7 @@ SequelizeForeignKeyHandler = (error, res) => {
 
 
 expressErrorHandler = (error, res) => {
-  var errorInfo = errorMap.map.find(e => e.name === error.name);
+  var errorInfo = errorMap.map.find(e => e.name === error.name || e.message === error.message);
   if (errorInfo === undefined) {
     logger.error("Error code not found : " + error);
     res.status(500).send({message : "Error code not found"});

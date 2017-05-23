@@ -67,12 +67,16 @@ exports.transaction = (model, res, callback) => {
 }
 
 exports.findAll = (model, res, attributes, sendIt) => {
-  return sequelizeCall(model.findAll(attributes)).then(function (result) {
-    setResult(result, res)
-    if (sendIt === undefined && res != undefined)
-      res.send(result);
-    return result;
-  })
+  if (attributes.transaction == undefined) {
+    return sequelizeCall(model.findAll(attributes)).then(function (result) {
+      setResult(result, res)
+      if (sendIt === undefined && res != undefined)
+        res.send(result);
+      return result;
+    })
+  } else {
+    return model.findAll(attributes);
+  }
 }
 
 exports.findAllAndCount = (model, res, attributes) => {
@@ -88,14 +92,22 @@ exports.findAllAndCount = (model, res, attributes) => {
   });
 }
 
-exports.find = (model, res, attributes) => {
-  return sequelizeCall(model.find(attributes)).then(function (result) {
-    if (setResult(result, res))
+exports.find = (model, res, attributes, transaction) => {
+  if (transaction == undefined) {
+    return sequelizeCall(model.find(attributes)).then(function (result) {
+      if (setResult(result, res))
+        return result;
+      if (res)
+        res.json(result);
       return result;
-    if (res)
-      res.json(result);
-    return result;
-  })
+    })
+  } else {
+    return model.find(attributes, transaction).then(function (result) {
+      if (result == undefined) {
+        throw new Error('unauthorized');
+      }
+    });
+  }
 }
 
 exports.create = (model, res, attributes, transaction) => {

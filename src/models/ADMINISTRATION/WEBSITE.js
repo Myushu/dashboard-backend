@@ -33,6 +33,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: "1"
+    },
+    IS_ENABLE: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: "0"
     }
   }, {
     tableName: 'WEBSITE',

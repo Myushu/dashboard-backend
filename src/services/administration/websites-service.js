@@ -4,25 +4,28 @@ const orm = require('../../common/orm');
 const alias = require('../../common/alias');
 const errorManager = require('../../common/errors');
 const queryManager = require('../../common/queryManager');
-
-const clientModel = orm.getTable("ADMINISTRATION", "ADMIN_CLIENT");
-const websiteModel = orm.getTable("ADMINISTRATION", "WEBSITE");
-const clientWebsiteModel = orm.getTable("ADMINISTRATION", "CLIENT_WEBSITE");
-
 const mailManager = require('../../common/mailManager');
 
-exports.getById = (idClient, idWebsite, clientToken, res) => {
+exports.getById = (idWebsite, clientToken, res) => {
   var attributes = {
-    attributes: alias.clientAttributes,
-    include: alias.addressInclude,
-    where: {
-      ID_CLIENT: idClient,
-      ID_WEBSITE: idWebsite,
+    attributes: alias.websiteAttributes,
+    include : alias.clientWebsiteInclude(clientToken.ID_CLIENT, idWebsite),
+    where : {
+      IS_ENABLE : true,
     }
   }
-  if (idClient != clientToken.ID_CLIENT)
-    res.sendStatus(401);
-  orm.find(clientModel, res, attributes);
+  return orm.find(alias.websiteModel, res, attributes);
+}
+
+exports.getAll = (clientToken, res) => {
+  var attributes = {
+    attributes: alias.websiteAttributes,
+    include : alias.clientWebsiteIncludeByClient(clientToken.ID_CLIENT),
+    where : {
+      IS_ENABLE : true,
+    }
+  }
+  return orm.findAll(alias.websiteModel, res, attributes);
 }
 
 exports.create = (req, res, clientToken) => {
@@ -31,66 +34,46 @@ exports.create = (req, res, clientToken) => {
   delete req.DATE_UPDATE;
   delete req.DATE_ACTIVE_UPDATE;
   req.IS_ACTIVE = false;
-  orm.transaction(websiteModel, res, function(t) {
-    return orm.create(websiteModel, res, req, t).then(function (website) {
+  req.IS_ENABLE = true;
+  orm.transaction(alias.websiteModel, res, function(t) {
+    return orm.create(alias.websiteModel, res, req, t).then(function (website) {
       var content = {
         ID_CLIENT : clientToken.ID_CLIENT,
         ID_WEBSITE : website.ID_WEBSITE
       };
-      return orm.create(clientWebsiteModel, res, content, t);
+      return orm.create(alias.clientWebsiteModel, res, content, t);
     });
   });
 }
 
-exports.update = (content, idClient, clientToken, res) => {
-  delete content.ID_CLIENT;
-  if (idClient != clientToken.ID_CLIENT)
-    res.sendStatus(401);
-  else {
-    orm.transaction(clientModel, res, function(t) {
-      return orm.update(clientModel, content, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT}, transaction : t})
-      .then(function () {
-        return orm.update(addressModel, content.ADDRESS, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT}, transaction : t});
-      });
+// must check is enable;
+exports.update = (content, idWebsite, clientToken, res) => {
+  delete content.ID_WEBSITE;
+  delete content.DATE_CREATION;
+  delete content.DATE_ACTIVE_UPDATE;
+  delete content.IS_ACTIVE;
+  delete content.IS_ENABLE;
+  content.DATE_UPDATE = new Date();
+  orm.transaction(alias.clientWebsiteModel, res, function(t) {
+    return orm.find(alias.clientWebsiteModel, res, {
+      where : alias.clientWebsitWhereIsClient(clientToken.ID_CLIENT, idWebsite)}, t)
+        .then(function (result) {
+        return orm.update(alias.websiteModel, content, res, { where : {'ID_WEBSITE' : idWebsite}, transaction: t});
     });
+  });
+}
+
+exports.delete = (idWebsite, clientToken, res) => {
+  var content = {
+    'IS_ENABLE': false,
+    'URL': '',
   }
-}
-
-exports.delete = (idClient, clientToken, res) => {
-  orm.delete(clientModel, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT }});
-  this.logout(res);
-}
-
-exports.logout = (res) => {
-  res.clearCookie('token');
-  res.status(200).send();
-}
-
-exports.checkAuthentication = (body, res) => {
-  if (body.EMAIL_ADDRESS === undefined)
-    errorManager.handle({name : "emailMissing"}, res);
-  else if (body.HASH_PASSWORD === undefined)
-    errorManager.handle({name : "passwordMissing"}, res);
-  else
-    return orm.find(clientModel, undefined, {where : body}).then(function (result) {
-      return result;
-    })
-}
-
-function tokenGenerator(result, res) {
-    var client = {ID_CLIENT : result.ID_CLIENT};
-    var token = jwt.sign(client, config.get('JWT_SECRET', 'jwt.secret'), {
-      expiresIn: config.get('TOKEN_EXPIRE', 'token.expire') * 1000,
-    });
-    res.cookie('token', token, {maxAge: config.get('TOKEN_EXPIRE', 'token.expire') * 1000, httpOnly: true});
-    res.status(200).send(client);
-}
-
-exports.authentification = (req, res) => {
-  this.checkAuthentication(req.body, res).then(function(result) {
-    if (!result)
-      res.status(403).send();
-    else
-      tokenGenerator(result, res);
+  orm.transaction(alias.clientWebsiteModel, res, function(t) {
+    return orm.find(alias.clientWebsiteModel, res, {
+      where : alias.clientWebsitWhereIsClient(clientToken.ID_CLIENT, idWebsite)}, t)
+        .then(function (result) {
+          return orm.update(alias.websiteModel, content, res, { where : {'ID_WEBSITE' : idWebsite}, transaction : t});
+        }
+    );
   });
 }
