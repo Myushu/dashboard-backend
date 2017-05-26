@@ -4,10 +4,11 @@ const orm = require('../common/orm');
 
 const urlModel = orm.getTable("ADMINISTRATION", "CLIENT_URL_ACTIVATION");
 
-exports.generate = (idClient) => {
+exports.generate = (idClient, email) => {
   var content = {
-    UUID : uuid.v4(),
-    ID_CLIENT : idClient
+    UUID: uuid.v4(),
+    ID_CLIENT: idClient,
+    EMAIL_ADDRESS: email
   };
   orm.delete(urlModel, undefined, {where: {ID_CLIENT: idClient}}).then(function () {
     orm.create(urlModel, undefined, content);

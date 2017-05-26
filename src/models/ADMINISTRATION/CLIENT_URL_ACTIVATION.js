@@ -14,6 +14,10 @@ module.exports = function(sequelize, DataTypes) {
     UUID: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    EMAIL_ADDRESS: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     tableName: 'CLIENT_URL_ACTIVATION',
