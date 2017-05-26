@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('CRYPTO', {
+  return sequelize.define('CRYPTO_CURRENCY', {
     ID_CRYPTO: {
       type: DataTypes.CHAR(3),
       allowNull: false,
@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'CRYPTO',
+    tableName: 'CRYPTO_CURRENCY',
     timestamps: false
   });
 };

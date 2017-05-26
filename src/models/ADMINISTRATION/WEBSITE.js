@@ -3,14 +3,13 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('WEBSITE', {
     ID_WEBSITE: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.CHAR(10),
       allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
+      primaryKey: true
     },
     NAME: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
     },
     URL: {
       type: DataTypes.STRING,

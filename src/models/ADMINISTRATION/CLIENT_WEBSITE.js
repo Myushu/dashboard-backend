@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('CLIENT_WEBSITE', {
     ID_WEBSITE: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.CHAR(10),
       allowNull: false,
       primaryKey: true,
       references: {

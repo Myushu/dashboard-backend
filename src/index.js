@@ -34,8 +34,8 @@ require('./common/headerManager')(app);
 require('./controllers/home-controller')(app);
 
 // administration
-require('./controllers/administration/clients-controller')(app);
-require('./controllers/administration/websites-controller')(app);
+require('./controllers/administration/client-controller')(app);
+require('./controllers/administration/website-controller')(app);
 require('./controllers/administration/validation-controller')(app);
 
 // Dashboard

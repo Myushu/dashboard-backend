@@ -5,7 +5,11 @@ module.exports = function(sequelize, DataTypes) {
     ID_CLIENT: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      references: {
+        model: 'ADMIN_CLIENT',
+        key: 'ID_CLIENT'
+      }
     },
     UUID: {
       type: DataTypes.STRING,

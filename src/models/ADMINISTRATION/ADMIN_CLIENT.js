@@ -24,6 +24,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: false
     },
+    DATE_CONNECTION: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
     HASH_PASSWORD: {
       type: "VARBINARY(255)",
       allowNull: false

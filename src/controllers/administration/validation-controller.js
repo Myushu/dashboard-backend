@@ -1,7 +1,7 @@
 const service = require('../../services/administration/validation-service');
 const logger = require('../../common/logger');
 
-logger.debug('loading controller : VALIDATION')
+logger.debug('loading controller : /validation')
 
 module.exports = function(app) {
     // Validate a client email

@@ -1,7 +1,7 @@
-const service = require('../../services/administration/clients-service');
+const service = require('../../services/administration/client-service');
 const logger = require('../../common/logger');
 
-logger.debug('loading controller : CLIENTS')
+logger.debug('loading controller : /client')
 
 module.exports = function(app) {
     // Get a client
@@ -32,5 +32,10 @@ module.exports = function(app) {
     //Log out
     app.post('/client/logout', (req, res) => {
       service.logout(res);
+    });
+
+    //Restore account
+    app.post('/client/restore', (req, res) => {
+      service.restore(req, res);
     });
 }

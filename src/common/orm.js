@@ -7,17 +7,20 @@ var databasesName = config.get('SQL_DATABASE', 'sql.databases', ['DASHBOARD', 'A
 var dbs = [];
 
 for (var db in databasesName) {
-  logger.info('use database :', databasesName[db])
+  logger.debug('use database :', databasesName[db])
   dbs[databasesName[db]] = new sequelize({
-    username : config.get('SQL_USERNAME', 'sql.credentials.username', 'root'),
-    password : config.get('SQL_PASSWORD', 'sql.credentials.password', 'root'),
-    database : databasesName[db],
-    host : config.get('SQL_HOSTNAME', 'sql.hostname', 'localhost'),
-    port : config.get('SQL_PORT', 'sql.port', 3306),
-    logging : logger.info,
-    options : {
-      retry : {
-        max : config.get('SQL_MAX_RETRIES', 'sql.maxRetries', 3),
+    username: config.get('SQL_USERNAME', 'sql.credentials.username', 'root'),
+    password: config.get('SQL_PASSWORD', 'sql.credentials.password', 'root'),
+    database: databasesName[db],
+    host: config.get('SQL_HOSTNAME', 'sql.hostname', 'localhost'),
+    port: config.get('SQL_PORT', 'sql.port', 3306),
+    logging: logger.info,
+    options: {
+      pool: {
+        max: 20
+      },
+      retry: {
+        max: config.get('SQL_MAX_RETRIES', 'sql.maxRetries', 3),
         },
       },
     dialect: 'mysql',
@@ -57,11 +60,13 @@ function sequelizeCall (request)  {
 }
 
 exports.transaction = (model, res, callback) => {
-  return model.sequelize.transaction(callback)
+  return model.sequelize.transaction({}, callback)
   .then(function (result) {
-    res.sendStatus(200);
+    if (res != undefined)
+      res.sendStatus(200);
   }).catch(function(err) {
-    errorManager.handle(err, res);
+    if (res != undefined)
+      errorManager.handle(err, res);
     return {error : err};
   });
 }
@@ -139,13 +144,17 @@ exports.update = (model, newContent, res, attributes) => {
 }
 
 exports.delete = (model, res, attributes) => {
-  return sequelizeCall(model.destroy(attributes)).then(function (result) {
-    if (setResult(result, res))
+  if (attributes.transaction == undefined) {
+    return sequelizeCall(model.destroy(attributes)).then(function (result) {
+      if (setResult(result, res))
+        return result;
+      if (res)
+        res.status(200).send();
       return result;
-    if (res)
-      res.status(200).send();
-    return result;
-  })
+    })
+  } else {
+    return model.destroy(attributes);
+  }
 }
 
 exports.count = (model, res, attributes) => {
@@ -156,4 +165,8 @@ exports.count = (model, res, attributes) => {
       res.status(200).send();
     return result;
   })
+}
+
+exports.query = (database, query, t) => {
+  return dbs[database].query(query, {transaction : t});
 }
