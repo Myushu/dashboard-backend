@@ -26,12 +26,11 @@ exports.create = (req, res) => {
   if (req.ADDRESS == undefined)
     req.sendStatus(401);
   orm.transaction(ms.ADMIN_CLIENT.model, res, function(t) {
-    console.log('ALJOSHA', req);
     return orm.create(ms.ADMIN_CLIENT.model, res, req, t)
     .then(function (client) {
       req.ADDRESS.ID_CLIENT = client.ID_CLIENT;
       return orm.create(ms.ADDRESS.model, res, req.ADDRESS, t).then(function () {
-        validation.generate(client.EMAIL_ADDRESS);
+        validation.generateActivation(client.EMAIL_ADDRESS);
       })
     });
   });
@@ -69,15 +68,18 @@ exports.logout = (res, send) => {
 }
 
 exports.restore = (req, res) => {
-  return res.send(501);
+  return validation.generateReset(req.body.EMAIL_ADDRESS).then(function (result) {
+    if (result == true)
+    return res.status(200).send();
+  return res.status(400).send();
+  });
 }
-
 
 exports.checkAuthentication = (body, res) => {
   if (body.EMAIL_ADDRESS === undefined)
-    errorManager.handle({name : "emailMissing"}, res);
+    errorManager.handle({name: "emailMissing"}, res);
   else if (body.HASH_PASSWORD === undefined)
-    errorManager.handle({name : "passwordMissing"}, res);
+    errorManager.handle({name: "passwordMissing"}, res);
   else
     return orm.find(ms.ADMIN_CLIENT.model, undefined, {where : body}).then(function (result) {
       return result;
@@ -95,8 +97,8 @@ function tokenGenerator(result, res) {
 
 exports.authentification = (req, res) => {
   this.checkAuthentication(req.body, res).then(function(result) {
-    if (!result || result.IS_ENABLE == false || result.IS_VERIFIED == false)
-      res.status(403).send();
+    if (!result || result.IS_ENABLE == false)
+      errorManager.handle({name: "disabledAccount"}, res);
     else {
       orm.update(ms.ADMIN_CLIENT.model, {DATE_CONNECTION: new Date()}, res, {where: {ID_CLIENT: result.ID_CLIENT}});
       tokenGenerator(result, res);

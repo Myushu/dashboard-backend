@@ -9,7 +9,7 @@ module.exports = function(app) {
     getToken: function fromHeaderOrQuerystring (req) {
       return req.cookies.token;
     }
-  }).unless({path : ['/', '/client/login', '/client/signup', pathToRegexp('/validation/*'), '/validation', '/client/restore']}));
+  }).unless({path : ['/', '/client/login', '/client/signup', pathToRegexp('/validation/*'), '/validation', '/client/reset']}));
 
   app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {

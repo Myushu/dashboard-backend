@@ -55,6 +55,12 @@ exports.map = [
     code: 010,
     statusCode: 400
   },
+  {
+    name: 'disabledAccount',
+    message: 'Account must be reactivated',
+    code: 011,
+    statusCode: 403
+  },
   // Database Error
   {
     name: 'SequelizeDatabaseError',

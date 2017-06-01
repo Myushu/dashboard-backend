@@ -13,6 +13,7 @@ let transporter = nodemailer.createTransport({
 });
 
 exports.send = (email, subject, html) => {
+  logger.debug("sending email to:", email);
   var mailOptions = {
     from: config.get('MAIL_ADDRESS', 'mail.address'),
     to: email,

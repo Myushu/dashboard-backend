@@ -35,7 +35,7 @@ module.exports = function(app) {
     });
 
     //Restore account
-    app.post('/client/restore', (req, res) => {
+    app.post('/client/reset', (req, res) => {
       service.restore(req, res);
     });
 }
