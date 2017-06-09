@@ -19,15 +19,15 @@
     }
   },
   "jwt" : {
-    "secret": "secret"
+    "secret": "LaCa6b3n2a0vAF2"
   },
   "token" : {
     "expire" : 86400000
   },
   "server" : {
-    "port" : 3000,
-    "url" : "http://localhost",
-    "cors" : ["http://dashboard.antmine.io"]
+    "port" : 80,
+    "url" : "http://back.dashboard.antmine.io",
+    "cors" : ["http://dashboard.antmine.io", "http://back.dashboard.antmine.io"]
   },
   "client" : {
     "url" : "http://dashboard.antmine.io"
