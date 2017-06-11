@@ -27,7 +27,7 @@
   "server" : {
     "port" : 80,
     "url" : "http://back.dashboard.antmine.io",
-    "cors" : ["http://dashboard.antmine.io", "http://back.dashboard.antmine.io"]
+    "cors" : ["http://dashboard.antmine.io", "http://localhost:4200"]
   },
   "client" : {
     "url" : "http://dashboard.antmine.io"
