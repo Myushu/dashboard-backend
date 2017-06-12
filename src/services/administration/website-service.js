@@ -51,7 +51,7 @@ exports.create = (req, res, clientToken) => {
   req.IS_ACTIVE = false;
   req.IS_ENABLE = true;
   req.ID_WEBSITE = rg.id(10);
-  if (req.CRYPTO_CURRENCYs == undefined)
+  if (req.CRYPTO_CURRENCYs == undefined || Array.isArray(req.CRYPTO_CURRENCYs) != true)
     return errorManager.handle({name : "cryptoCurrencyMissing"}, res);
   orm.transaction(ms.WEBSITE.model, res, function(t) {
     return orm.create(ms.WEBSITE.model, res, req, t).then(function (website) {
