@@ -54,8 +54,8 @@ exports.ADDRESS.include = {
 exports.WEBSITE.attributes = ['ID_WEBSITE', 'NAME', 'URL', 'IS_ACTIVE'];
 
 // CLIENT_WEBSITE
-exports.CLIENT_WEBSITE.attributes = [];
-exports.CLIENT_WEBSITE.attributesFull = ['ID_WEBSITE', 'ID_CLIENT'];
+exports.CLIENT_WEBSITE.attributesEmpty = [];
+exports.CLIENT_WEBSITE.attributes = ['ID_WEBSITE', 'ID_CLIENT'];
 exports.CLIENT_WEBSITE.where = {}
 exports.CLIENT_WEBSITE.where.clientWebsite = (idClient, idWebsite) => {return {
   ID_CLIENT: idClient,
@@ -63,12 +63,12 @@ exports.CLIENT_WEBSITE.where.clientWebsite = (idClient, idWebsite) => {return {
 }}
 exports.CLIENT_WEBSITE.include = (idClient, idWebsite) => {return {
   model : this.CLIENT_WEBSITE.model,
-  attributes : this.CLIENT_WEBSITE.attributes,
+  attributes : this.CLIENT_WEBSITE.attributesEmpty,
   where : this.CLIENT_WEBSITE.where.clientWebsite(idClient, idWebsite)
 }}
 exports.CLIENT_WEBSITE.include.client = (idClient) => {return {
   model : this.CLIENT_WEBSITE.model,
-  attributes : this.CLIENT_WEBSITE.attributes,
+  attributes : this.CLIENT_WEBSITE.attributesEmpty,
   where : {
     ID_CLIENT: idClient
   }

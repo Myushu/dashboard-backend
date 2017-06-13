@@ -5,6 +5,7 @@ const errorManager  = require('./errors');
 
 var databasesName = config.get('SQL_DATABASE', 'sql.databases', ['DASHBOARD', 'ADMINISTRATION']);
 var dbs = [];
+var that = this;
 
 for (var db in databasesName) {
   logger.debug('use database :', databasesName[db])
@@ -97,7 +98,7 @@ exports.findAllAndCount = (model, res, attributes) => {
   });
 }
 
-exports.find = (model, res, attributes, transaction) => {
+exports.find = (model, res, attributes, transaction, findMode) => {
   if (transaction == undefined) {
     return sequelizeCall(model.find(attributes)).then(function (result) {
       if (setResult(result, res))
@@ -108,9 +109,10 @@ exports.find = (model, res, attributes, transaction) => {
     })
   } else {
     return model.find(attributes, transaction).then(function (result) {
-      if (result == undefined) {
+      if (result == undefined && findMode == undefined) {
         throw new Error('unauthorized');
       }
+      return result;
     });
   }
 }
@@ -169,4 +171,18 @@ exports.count = (model, res, attributes) => {
 
 exports.query = (database, query, t) => {
   return dbs[database].query(query, {transaction : t});
+}
+
+exports.createOrUpdate = (model, res, attributes, whereAttributes, transaction) => {
+  console.log("create or update =")
+  return this.find(model.model, res, {attributes: model.attributes, where: whereAttributes}, transaction, true).then(function (result) {
+    if (result) {
+      delete attributes.ID_WEBSITE; //tmp
+      return that.update(model.model, attributes, res, {where: whereAttributes, transaction: transaction}).then(function() {
+        return that.find(model.model, res, {attributes: model.attributes, where: whereAttributes}, transaction);
+      })
+    } else {
+      return that.create(model.model, res, attributes, transaction);
+    }
+  })
 }

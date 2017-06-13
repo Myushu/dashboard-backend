@@ -9,13 +9,19 @@ const mailManager = require('../../common/mailManager');
 
 function checkIsOwner(idClient, idWebsite, res, t) {
   return orm.find(ms.CLIENT_WEBSITE.model, res, {
-      attributes : ms.CLIENT_WEBSITE.attributesFull,
+      attributes : ms.CLIENT_WEBSITE.attributes,
       where : ms.CLIENT_WEBSITE.where.clientWebsite(idClient, idWebsite)
     }, t);
 }
 
 function deleteWebsite(idWebsite, res, t) {
-  return orm.update(ms.WEBSITE.model, contentCleared, res, {where: {'ID_WEBSITE': idWebsite}, transaction : t});
+  var defaultWebsite = {
+    IS_ENABLE: false,
+    ID_ACTIVE: false,
+  };
+  return orm.update(ms.WEBSITE.model, defaultWebsite, res, {where: {'ID_WEBSITE': idWebsite}, transaction : t}).then(function () {
+    return orm.delete(ms.CRYPTO_CURRENCY_WEBSITE.model, res, {where: {'ID_WEBSITE': idWebsite}, transaction: t})
+  })
 }
 
 exports.getById = (idWebsite, clientToken, res) => {
@@ -54,12 +60,12 @@ exports.create = (req, res, clientToken) => {
   if (req.CRYPTO_CURRENCYs == undefined || Array.isArray(req.CRYPTO_CURRENCYs) != true)
     return errorManager.handle({name : "cryptoCurrencyMissing"}, res);
   orm.transaction(ms.WEBSITE.model, res, function(t) {
-    return orm.create(ms.WEBSITE.model, res, req, t).then(function (website) {
+    return orm.createOrUpdate(ms.WEBSITE, res, req, {URL: req.URL, IS_ENABLE: false}, t).then(function (website) {
       var content = {
         ID_CLIENT : clientToken.ID_CLIENT,
         ID_WEBSITE : website.ID_WEBSITE
       };
-      return orm.create(ms.CLIENT_WEBSITE.model, res, content, t).then(function () {
+      return orm.createOrUpdate(ms.CLIENT_WEBSITE, res, content, {ID_WEBSITE: content.ID_WEBSITE}, t).then(function () {
         return orm.query('ADMINISTRATION', 'call INIT_WEBSITE_CRYPTO(\'' + website.ID_WEBSITE + '\')', t).then(function () {
           return req.CRYPTO_CURRENCYs.forEach(function (c) {
             return orm.update(ms.CRYPTO_CURRENCY_WEBSITE.model, c, res, {where: {ID_WEBSITE: website.ID_WEBSITE}});
@@ -113,7 +119,7 @@ exports.delete = (idWebsite, clientToken, res) => {
 // used by client-service
 exports.deleteAll = (idClient, res, t) => {
   return orm.findAll(ms.CLIENT_WEBSITE.model, res, {
-      attributes : ms.CLIENT_WEBSITE.attributesFull,
+      attributes : ms.CLIENT_WEBSITE.attributes,
       where : {
         ID_CLIENT: idClient
       },
