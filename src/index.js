@@ -31,7 +31,10 @@ app.use(cookieParser());
 
 require('./common/tokenManager')(app);
 require('./common/headerManager')(app);
+
+// basic
 require('./controllers/home-controller')(app);
+require('./controllers/code-controller')(app);
 
 // administration
 require('./controllers/administration/client-controller')(app);
