@@ -127,7 +127,7 @@ exports.deleteAll = (idClient, res, t) => {
     }).then(function (result) {
       var r;
       result.forEach(function (idWebsite) {
-        r = deleteWebsite(idWebsite, res, t)
+        r = deleteWebsite(idWebsite.ID_WEBSITE, res, t)
       });
       return r;
     });
