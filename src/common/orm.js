@@ -174,7 +174,6 @@ exports.query = (database, query, t) => {
 }
 
 exports.createOrUpdate = (model, res, attributes, whereAttributes, transaction) => {
-  console.log("create or update =")
   return this.find(model.model, res, {attributes: model.attributes, where: whereAttributes}, transaction, true).then(function (result) {
     if (result) {
       delete attributes.ID_WEBSITE; //tmp

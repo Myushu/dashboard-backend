@@ -26,7 +26,11 @@ exports.create = (req, res) => {
   if (req.ADDRESS == undefined)
     req.sendStatus(401);
   orm.transaction(ms.ADMIN_CLIENT.model, res, function(t) {
-    return orm.create(ms.ADMIN_CLIENT.model, res, req, t)
+    var whereattributes = {
+      IS_ENABLE: false,
+      EMAIL_ADDRESS: req.EMAIL_ADDRESS
+    }
+    return orm.createOrUpdate(ms.ADMIN_CLIENT, res, req, whereattributes, t)
     .then(function (client) {
       req.ADDRESS.ID_CLIENT = client.ID_CLIENT;
       return orm.create(ms.ADDRESS.model, res, req.ADDRESS, t).then(function () {
