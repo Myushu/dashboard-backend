@@ -57,7 +57,7 @@ exports.create = (req, res, clientToken) => {
   req.IS_ACTIVE = false;
   req.IS_ENABLE = true;
   req.ID_WEBSITE = rg.id(10);
-  if (req.CRYPTO_CURRENCYs == undefined || Array.isArray(req.CRYPTO_CURRENCYs) != true)
+  if (req.CRYPTO_CURRENCY_WEBSITEs == undefined || Array.isArray(req.CRYPTO_CURRENCY_WEBSITEs) != true)
     return errorManager.handle({name : "cryptoCurrencyMissing"}, res);
   orm.transaction(ms.WEBSITE.model, res, function(t) {
     return orm.createOrUpdate(ms.WEBSITE, res, req, {URL: req.URL, IS_ENABLE: false}, t).then(function (website) {
@@ -67,7 +67,7 @@ exports.create = (req, res, clientToken) => {
       };
       return orm.createOrUpdate(ms.CLIENT_WEBSITE, res, content, {ID_WEBSITE: content.ID_WEBSITE}, t).then(function () {
         return orm.query('ADMINISTRATION', 'call INIT_WEBSITE_CRYPTO(\'' + website.ID_WEBSITE + '\')', t).then(function () {
-          return req.CRYPTO_CURRENCYs.forEach(function (c) {
+          return req.CRYPTO_CURRENCY_WEBSITEs.forEach(function (c) {
             return orm.update(ms.CRYPTO_CURRENCY_WEBSITE.model, c, res, {where: {ID_WEBSITE: website.ID_WEBSITE}});
           });
         });
@@ -88,8 +88,8 @@ exports.update = (content, idWebsite, clientToken, res) => {
       .then(function (result) {
         return orm.update(ms.WEBSITE.model, content, res, {where: {'ID_WEBSITE': idWebsite, 'IS_ENABLE': true}, transaction: t}).then(function () {
           var r;
-          if (content.CRYPTO_CURRENCYs != undefined) {
-            content.CRYPTO_CURRENCYs.forEach(function (c) {
+          if (content.CRYPTO_CURRENCY_WEBSITEs != undefined) {
+            content.CRYPTO_CURRENCY_WEBSITEs.forEach(function (c) {
               r = orm.update(ms.CRYPTO_CURRENCY_WEBSITE.model, c, res, {where: {'ID_WEBSITE': idWebsite}, transaction: t});
             });
             return r;
