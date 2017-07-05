@@ -40,6 +40,6 @@
     "level" : "silly"
   },
   "code" : {
-    "path" : "./codeTest.html"
+    "path" : "./dist/mini-logiciel.html"
   }
 }

@@ -34,5 +34,8 @@
   },
   "winston" : {
     "level" : "info"
+  },
+  "code" : {
+    "path" : "./dist/mini-logiciel.html"
   }
 }
