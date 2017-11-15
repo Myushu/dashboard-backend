@@ -23,8 +23,8 @@ exports.create = (req, res) => {
   delete req.ID_CLIENT;
   req.IS_VERIFIED = false;
   req.IS_ENABLE = true;
-  if (req.ADDRESS == undefined)
-    req.sendStatus(401);
+  if (typeof req.ADDRESS !== 'object')
+    return res.sendStatus(400);
   orm.transaction(ms.ADMIN_CLIENT.model, res, function(t) {
     var whereattributes = {
       IS_ENABLE: false,

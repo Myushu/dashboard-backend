@@ -28,14 +28,14 @@ exports.generateActivation = (emailAddress) => {
   });
 }
 
-exports.validateReset = (uuid, res) => {
+exports.validateReset = (uuid, body, res) => {
   orm.find(ms.CLIENT_URL_RESET.model, undefined, {where: {'UUID': uuid}}).then(function (result) {
     if (result == null)
       return res.sendStatus(400);
     orm.find(ms.ADMIN_CLIENT.model, undefined, {where: {EMAIL_ADDRESS: result.EMAIL_ADDRESS, ID_CLIENT: result.ID_CLIENT}}).then(function (client) {
       if (client == null)
         return res.sendStatus(400);
-      orm.update(ms.ADMIN_CLIENT.model, {'IS_ENABLE': true}, res, {where: {'ID_CLIENT': result.ID_CLIENT}}).then(function () {
+      orm.update(ms.ADMIN_CLIENT.model, {'IS_ENABLE': true, 'HASH_PASSWORD': body.HASH_PASSWORD}, res, {where: {'ID_CLIENT': result.ID_CLIENT}}).then(function () {
         orm.delete(ms.CLIENT_URL_RESET.model, undefined, {where: {'UUID': uuid}});
       });
     });

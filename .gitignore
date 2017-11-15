@@ -229,3 +229,4 @@ flycheck_*.el
 #ugram
 backend/pictures
 backend/ugram*.zip
+package-lock.json
