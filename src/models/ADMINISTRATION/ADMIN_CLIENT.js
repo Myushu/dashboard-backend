@@ -9,23 +9,24 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true
     },
     NAME: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     LASTNAME: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     EMAIL_ADDRESS: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true
     },
     DATE_BIRTHDAY: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     DATE_CONNECTION: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true
     },
     HASH_PASSWORD: {
@@ -35,12 +36,12 @@ module.exports = function(sequelize, DataTypes) {
     IS_VERIFIED: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: "0"
+      defaultValue: '0'
     },
     IS_ENABLE: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: "1"
+      defaultValue: '1'
     }
   }, {
     tableName: 'ADMIN_CLIENT',

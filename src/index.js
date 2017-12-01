@@ -42,7 +42,7 @@ require('./controllers/administration/website-controller')(app);
 require('./controllers/administration/validation-controller')(app);
 
 // Dashboard
-
+require('./controllers/application/stats-controller')(app);
 orm.initConnection();
 server.listen(port);
 logger.info(`App started on port ${port}`);

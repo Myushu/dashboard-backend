@@ -8,12 +8,13 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     NAME: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     URL: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true
     },
     DATE_CREATION: {
       type: DataTypes.DATE,
@@ -28,15 +29,19 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: true
     },
+    DATE_CHECK: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
     IS_ACTIVE: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: "1"
+      defaultValue: '1'
     },
     IS_ENABLE: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: "0"
+      defaultValue: '0'
     }
   }, {
     tableName: 'WEBSITE',

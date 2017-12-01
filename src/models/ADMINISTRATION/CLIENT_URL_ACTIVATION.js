@@ -12,11 +12,11 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     UUID: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     EMAIL_ADDRESS: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     }
   }, {

@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
     IS_ENABLE: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: "1"
+      defaultValue: '1'
     }
   }, {
     tableName: 'CRYPTO_CURRENCY_WEBSITE',
