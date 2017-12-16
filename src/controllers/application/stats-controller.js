@@ -5,8 +5,8 @@ logger.debug('loading controller : /stats')
 
 module.exports = function(app) {
     // Get a client
-    app.get('/stats/:idWebsite/:nbDay', (req, res) => {
-      service.get(req.params.idWebsite, req.params.nbDay, req.user, res);
+    app.get('/stats/:idWebsite/:days', (req, res) => {
+      service.get(req.params.idWebsite, req.params.days, req.user, res);
     });
 
     // generate stat

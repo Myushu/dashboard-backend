@@ -5,7 +5,6 @@ const orm = require('../../common/orm');
 const ms = require('../../common/modelService');
 const errorManager = require('../../common/errors');
 const queryManager = require('../../common/queryManager');
-const mailManager = require('../../common/mailManager');
 
 function checkIsOwner(idClient, idWebsite, res, t) {
   return orm.find(ms.CLIENT_WEBSITE.model, res, {

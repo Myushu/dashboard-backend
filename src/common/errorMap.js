@@ -61,6 +61,12 @@ exports.map = [
     code: 011,
     statusCode: 403
   },
+  {
+    name: 'notVerifiedAccount',
+    message: 'Check your email to enable your account',
+    code: 012,
+    statusCode: 403
+  },
   // Database Error
   {
     name: 'SequelizeDatabaseError',

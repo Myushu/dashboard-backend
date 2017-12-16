@@ -20,7 +20,11 @@ exports.validateActivation = (uuid, res) => {
 exports.generateActivation = (emailAddress) => {
   return orm.find(ms.ADMIN_CLIENT.model, undefined, {where: {EMAIL_ADDRESS: emailAddress}}).then(function (result) {
     if (result) {
-      mailManager.send(result.EMAIL_ADDRESS, "Activate your AntMine account", urlGenerator.generateActivatation(result.ID_CLIENT, result.EMAIL_ADDRESS));
+      mailManager.send(result.EMAIL_ADDRESS, "Activate your AntMine account", 
+        "Hello " + result.NAME + ",\n" + "Your AntMine must be activated. Please click to the link: "
+        + urlGenerator.generateActivatation(result.ID_CLIENT, result.EMAIL_ADDRESS)
+        + "\n\n If you have any problem, contact us: contact@antmine.io\
+        \n--\n The AntMine Team");
       return true;
     } else {
       return false;
@@ -47,7 +51,11 @@ exports.generateReset = (emailAddress) => {
   return orm.find(ms.ADMIN_CLIENT.model, undefined, {where: {EMAIL_ADDRESS: emailAddress}}).then(function (result) {
     if (result) {
       orm.update(ms.ADMIN_CLIENT.model, {'IS_ENABLE': false}, undefined, {where: {'ID_CLIENT': result.ID_CLIENT}});
-      mailManager.send(result.EMAIL_ADDRESS, "Reset your AntMine password", urlGenerator.generateReset(result.ID_CLIENT, result.EMAIL_ADDRESS));
+      mailManager.send(result.EMAIL_ADDRESS, "Reset your AntMine password",
+         "Hello " + result.NAME + ",\n" + "You requested to reset your password.\n" +
+         "Please click to the link: " + urlGenerator.generateReset(result.ID_CLIENT, result.EMAIL_ADDRESS)
+        + "\n\n If you have any problem, contact us: contact@antmine.io\
+        \n--\n The AntMine Team");
       return true;
     } else {
       return false;
