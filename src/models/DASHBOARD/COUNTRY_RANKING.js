@@ -11,13 +11,13 @@ module.exports = function(sequelize, DataTypes) {
         key: 'ID_WEBSITE'
       }
     },
-    DATE_EVENT: {
-      type: DataTypes.DATEONLY,
+    COUNTRY: {
+      type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true
     },
-    COUNTRY: {
-      type: DataTypes.STRING(255),
+    DATE_EVENT: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
       primaryKey: true
     },

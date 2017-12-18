@@ -53,6 +53,7 @@ exports.create = (req, res, clientToken) => {
   delete req.DATE_CREATION;
   delete req.DATE_UPDATE;
   delete req.DATE_ACTIVE_UPDATE;
+  req.BITCOIN_AMOUNT = 0;
   req.IS_ACTIVE = false;
   req.IS_ENABLE = true;
   req.ID_WEBSITE = rg.id(10);
@@ -81,6 +82,7 @@ exports.update = (content, idWebsite, clientToken, res) => {
   delete content.DATE_ACTIVE_UPDATE;
   delete content.IS_ACTIVE;
   delete content.IS_ENABLE;
+  delete content.BITCOIN_AMOUNT;
   content.DATE_UPDATE = new Date();
   orm.transaction(ms.CLIENT_WEBSITE.model, res, function(t) {
     return checkIsOwner(clientToken.ID_CLIENT, idWebsite, res, t)
