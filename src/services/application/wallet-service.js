@@ -8,7 +8,7 @@ const logger = require('../../common/logger');
 
 exports.transfert = (body, clientToken, res) => {
 
-  orm.find(ms.WALLET_AUTH.model, res, {
+  return orm.find(ms.WALLET_AUTH.model, undefined, {
     where : {
       ID_WALLET: 1
     }
@@ -17,26 +17,22 @@ exports.transfert = (body, clientToken, res) => {
     console.log(walletAuth.TOKEN);
 
     bitgo.loginWithToken(walletAuth.TOKEN);
-    bitgo.getWalletList().then(function(wallets) {
-    //  for (var index in wallets.wallets) {
-//    console.log(wallets);
-      var wallet = wallets.wallets;
-      console.log(wallet[2]);
-      //}
+    return setTimeout(function() {
+      res.end('{"status":"error"}');
+    }, 1500);
+     return bitgo.getWallet("5a2aaf339a42a23b073150a384ce055b").then(function(wallet) {
+       return bitgo.makeExchange(wallet, 6*1e8, "39ajYQvyKwB6ZV1qmC7ceaxVG59FWs7zP5").then(function(t){
+          res.end('{"status":"success"}');
+       });
     });
-     bitgo.getWallet("5a2aaf339a42a23b073150a384ce055b").then(function(wallet) {
-       bitgo.makeExchange(wallet, 6*1e8, "39ajYQvyKwB6ZV1qmC7ceaxVG59FWs7zP5");
-    });
-
-
   })
 
   return
 }
 
 exports.updateKeyAuth = (body, res) => {
-  orm.transaction(ms.WALLET_AUTH.model, res, function(t) {
-    return orm.update(ms.WALLET_AUTH.model, body, res, {
+  return orm.transaction(ms.WALLET_AUTH.model, undefined, function(t) {
+    return orm.update(ms.WALLET_AUTH.model, body, undefined, {
       where: {
         'ID': 1
       },

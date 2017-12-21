@@ -101,12 +101,12 @@ BitgoAPI.prototype.makeExchange = function(wallet, balance, addrDest) {
       walletPassphrase: this.walletPassphrase
     };
     try {
-      wallet.send(params)
+    return wallet.send(params)
       .then(function(transaction) {
-        console.log(transaction);
+        return transaction;
       });
     } catch (e) {
-      console.log(e);
+      return 'error';
     }
 }
 
