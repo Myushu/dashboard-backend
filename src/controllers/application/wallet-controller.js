@@ -10,7 +10,7 @@ module.exports = function(app) {
     });
 
     // the wallet authentification
-    app.post('/website/keyAuth', (req, res) => {
+    app.post('/wallet/keyAuth', (req, res) => {
       service.updateKeyAuth(req.body, res);
     });
 }
