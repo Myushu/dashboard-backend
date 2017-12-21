@@ -2,18 +2,18 @@
 const BitGoJS = require('bitgo');
 
 function BitgoAPI() {
-  var env = 'prod';
-  var coinType = 'BTC';
-  var walletPassphrase = '123456789TOTO';
+  this.env = 'prod';
+  this.coinType = 'btc';
+  this.walletPassphrase = '123456789TOTO';
 
-  var bitgo;
-  var user;
+  this.bitgo;
+  this.user;
 }
 
 BitgoAPI.prototype.login = function(user, password, code, callBack) {
   var self = this;
   this.bitgo = new BitGoJS.BitGo({
-    env: self.env,
+    env: 'prod',
   });
   this.bitgo.authenticate({
     username: user,
@@ -26,12 +26,12 @@ BitgoAPI.prototype.login = function(user, password, code, callBack) {
 }
 
 BitgoAPI.prototype.loginWithToken = function(accessToken) {
-  if (this.accessToken == undefined || this.accessToken == null) {
+  if (accessToken == undefined || accessToken == null) {
     console.error("BitgoAPI :: accessToken undefined");
-    return null;
+    return "error";
   }
   this.bitgo = new BitGoJS.BitGo({
-    env: self.env,
+    env: 'prod',
     accessToken: accessToken
   });
   console.dir('login');
@@ -40,12 +40,12 @@ BitgoAPI.prototype.loginWithToken = function(accessToken) {
 BitgoAPI.prototype.logout = function(callBack) {
   if (this.bitgo == undefined || this.bitgo == null) {
     console.error("BitgoAPI :: No Session open");
-    return null;
+    return "error";
   }
 
   var self = this;
   bitgo.logout({}).then(function () {
-    this.bitgo = null;
+    this.bitgo = "error";
     callBack();
   });
 }
@@ -53,10 +53,10 @@ BitgoAPI.prototype.logout = function(callBack) {
 BitgoAPI.prototype.getWalletList = function() {
   if (this.bitgo == undefined || this.bitgo == null) {
     console.error("BitgoAPI :: No Session open");
-    return null;
+    return "error";
   }
 
-  this.bitgo.coin(this.coinType).wallets().list({})
+  return this.bitgo.coin(this.coinType).wallets().list({})
   .then(function(wallets) {
     return wallets;
   });
@@ -65,7 +65,7 @@ BitgoAPI.prototype.getWalletList = function() {
 BitgoAPI.prototype.genWallet = function(label, passphrase) {
   if (this.bitgo == undefined || this.bitgo == null) {
     console.error("BitgoAPI :: No Session open");
-    return null;
+    return "error";
   }
 
   this.bitgo.coin(coinType).wallets().generateWallet({
@@ -79,10 +79,10 @@ BitgoAPI.prototype.genWallet = function(label, passphrase) {
 BitgoAPI.prototype.getWallet = function(idWallet) {
   if (this.bitgo == undefined || this.bitgo == null) {
     console.error("BitgoAPI :: No Session open");
-    return null;
+    return "error";
   }
 
-  this.bitgo.coin(this.coinType).wallets().get({
+  return this.bitgo.coin(this.coinType).wallets().get({
     id: idWallet
   }).then(function(wallet) {
     return wallet;
@@ -92,7 +92,7 @@ BitgoAPI.prototype.getWallet = function(idWallet) {
 BitgoAPI.prototype.makeExchange = function(wallet, balance, addrDest) {
   if (this.bitgo == undefined || this.bitgo == null) {
     console.error("BitgoAPI :: No Session open");
-    return null;
+    return "error";
   }
 
   let params = {
