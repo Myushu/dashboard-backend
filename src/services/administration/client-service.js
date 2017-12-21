@@ -101,8 +101,11 @@ function tokenGenerator(result, res) {
 
 exports.authentification = (req, res) => {
   this.checkAuthentication(req.body, res).then(function(result) {
-    if (!result || result.IS_ENABLE == false)
+    if (!result) {
+      errorManager.handle({name: "accountNotFound"}, res);      
+    } else if (result.IS_ENABLE == false) {
       errorManager.handle({name: "disabledAccount"}, res);
+    }
     else if (result.IS_VERIFIED == false)
       errorManager.handle({name: "notVerifiedAccount"}, res);
     else {
