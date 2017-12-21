@@ -1,7 +1,7 @@
 const orm = require('../common/orm');
 const sequelize = require('sequelize');
 ////////////////////////////////////////////////////////////////////////////////
-// ADMINISTRATION 
+// ADMINISTRATION
 ////////////////////////////////////////////////////////////////////////////////
 exports.ADMIN_CLIENT = {};
 exports.ADDRESS = {};
@@ -15,6 +15,7 @@ exports.VISITORS_WEBSITE = {};
 exports.MOST_VIEWED_PAGES = {}
 exports.COUNTRY_RANKING = {};
 exports.CRYPTO_MONEY = {}
+exports.WALLET_AUTH = {}
 
 exports.ADMIN_CLIENT.model = orm.getTable("ADMINISTRATION", "ADMIN_CLIENT");
 exports.ADDRESS.model = orm.getTable("ADMINISTRATION", "ADDRESS");
@@ -24,6 +25,7 @@ exports.CRYPTO_CURRENCY.model = orm.getTable("ADMINISTRATION", "CRYPTO_CURRENCY"
 exports.CLIENT_URL_RESET.model = orm.getTable("ADMINISTRATION", "CLIENT_URL_RESET");
 exports.CLIENT_URL_ACTIVATION.model = orm.getTable("ADMINISTRATION", "CLIENT_URL_ACTIVATION");
 exports.CRYPTO_CURRENCY_WEBSITE.model = orm.getTable("ADMINISTRATION", "CRYPTO_CURRENCY_WEBSITE");
+exports.WALLET_AUTH.model = orm.getTable("ADMINISTRATION", "WALLET_AUTH");
 exports.VISITORS_WEBSITE.model = orm.getTable("DASHBOARD", "VISITORS_WEBSITE");
 exports.MOST_VIEWED_PAGES.model = orm.getTable("DASHBOARD", "MOST_VIEWED_PAGES");
 exports.COUNTRY_RANKING.model = orm.getTable("DASHBOARD", "COUNTRY_RANKING");
@@ -187,4 +189,3 @@ exports.CRYPTO_MONEY.include = (idWebsite, dateEvent) => {return {
   group: 'CRYPTO',
   limit: 1
  }}
-
