@@ -77,7 +77,8 @@ exports.ADDRESS.include = {
 }
 
 // WEBSITE
-exports.WEBSITE.attributes = ['ID_WEBSITE', 'NAME', 'URL', 'IS_ACTIVE'];
+exports.WEBSITE.attributes = ['ID_WEBSITE', 'NAME', 'URL', 'IS_ACTIVE', 'BITCOIN_AMOUNT'];
+
 
 // CLIENT_WEBSITE
 exports.CLIENT_WEBSITE.attributesEmpty = [];

@@ -67,6 +67,12 @@ exports.map = [
     code: 012,
     statusCode: 403
   },
+  {
+    name: 'accountNotFound',
+    message: 'credentials not matching',
+    code: 013,
+    statusCode: 404
+  },
   // Database Error
   {
     name: 'SequelizeDatabaseError',
