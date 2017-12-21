@@ -5,13 +5,9 @@ module.exports = function(sequelize, DataTypes) {
     ID_WEBSITE: {
       type: DataTypes.CHAR(10),
       allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'WEBSITE',
-        key: 'ID_WEBSITE'
-      }
+      primaryKey: true
     },
-    DATE: {
+    DATE_EVENT: {
       type: DataTypes.DATEONLY,
       allowNull: false,
       primaryKey: true

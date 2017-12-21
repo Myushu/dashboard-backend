@@ -7,11 +7,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'WEBSITE',
+        model: 'VISITORS_WEBSITE',
         key: 'ID_WEBSITE'
       }
     },
-    DATE: {
+    DATE_EVENT: {
       type: DataTypes.DATEONLY,
       allowNull: false,
       primaryKey: true

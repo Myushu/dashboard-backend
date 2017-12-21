@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'WEBSITE',
+        model: 'VISITORS_WEBSITE',
         key: 'ID_WEBSITE'
       }
     },
@@ -16,13 +16,13 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    DATE: {
+    DATE_EVENT: {
       type: DataTypes.DATEONLY,
       allowNull: false,
       primaryKey: true
     },
-    PRECENT: {
-      type: DataTypes.FLOAT,
+    NB_VISITOR: {
+      type: DataTypes.INTEGER(11),
       allowNull: false
     }
   }, {

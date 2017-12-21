@@ -33,6 +33,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: true
     },
+    BITCOIN_AMOUNT: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: '0'
+    },
     IS_ACTIVE: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

@@ -103,6 +103,8 @@ exports.authentification = (req, res) => {
   this.checkAuthentication(req.body, res).then(function(result) {
     if (!result || result.IS_ENABLE == false)
       errorManager.handle({name: "disabledAccount"}, res);
+    else if (result.IS_VERIFIED == false)
+      errorManager.handle({name: "notVerifiedAccount"}, res);
     else {
       orm.update(ms.ADMIN_CLIENT.model, {DATE_CONNECTION: new Date()}, res, {where: {ID_CLIENT: result.ID_CLIENT}});
       tokenGenerator(result, res);
