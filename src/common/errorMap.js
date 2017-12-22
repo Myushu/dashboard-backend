@@ -115,16 +115,23 @@ exports.map = [
     statusCode: 400,
   },
   {
-    name: 'addrMissing',
+    name: 'antmineNotFound',
     type: '',
     code: 301,
+    message: 'You don\'t have enough money to make this transaction',
+    statusCode: 400,
+  },
+  {
+    name: 'addrMissing',
+    type: '',
+    code: 302,
     message: 'ADDR Missing',
     statusCode: 400,
   },
   {
     name: 'balanceMissing',
     type: '',
-    code: 302,
+    code: 303,
     message: 'BALANCE Missing',
     statusCode: 400,
   },
@@ -132,7 +139,7 @@ exports.map = [
     name: 'tokenMissing',
     type: '',
     code: 310,
-    message: 'TOPKEN Missing',
+    message: 'TOKEN Missing',
     statusCode: 400,
   }
 ];
