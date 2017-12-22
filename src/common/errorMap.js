@@ -106,5 +106,33 @@ exports.map = [
     code: 204,
     message: 'The file is not a valid picture',
     statusCode: 400,
+  },
+  {
+    name: 'bitgoNotFound',
+    type: '',
+    code: 300,
+    message: 'Call the support Please',
+    statusCode: 400,
+  },
+  {
+    name: 'addrMissing',
+    type: '',
+    code: 301,
+    message: 'ADDR Missing',
+    statusCode: 400,
+  },
+  {
+    name: 'balanceMissing',
+    type: '',
+    code: 302,
+    message: 'BALANCE Missing',
+    statusCode: 400,
+  },
+  {
+    name: 'tokenMissing',
+    type: '',
+    code: 310,
+    message: 'TOPKEN Missing',
+    statusCode: 400,
   }
 ];
