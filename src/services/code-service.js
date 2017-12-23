@@ -4,7 +4,7 @@ const config = require('../common/configManager');
 
 const path = config.get('CODE_PATH', 'code.path');
 if (fs.existsSync(path)) {
-  logger.debug(path + " found")
+  logger.info(path + " found")
 } else {
   logger.warn(path + " not found")
 }

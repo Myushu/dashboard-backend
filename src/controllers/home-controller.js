@@ -1,7 +1,7 @@
 const config = require('../common/configManager');
 const logger = require('../common/logger');
 
-logger.debug('loading controller : /home')
+logger.info('loading controller : /home')
 
 module.exports = function(app) {
   // Get the default page

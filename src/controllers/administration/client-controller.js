@@ -1,7 +1,7 @@
 const service = require('../../services/administration/client-service');
 const logger = require('../../common/logger');
 
-logger.debug('loading controller : /client')
+logger.info('loading controller : /client')
 
 module.exports = function(app) {
     // Get a client

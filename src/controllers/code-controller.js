@@ -1,7 +1,7 @@
 const service = require('../services/code-service');
 const logger = require('../common/logger');
 
-logger.debug('loading controller : /code')
+logger.info('loading controller : /code')
 
 module.exports = function(app) {
   // Get the default page

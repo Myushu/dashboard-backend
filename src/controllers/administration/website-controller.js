@@ -1,7 +1,7 @@
 const service = require('../../services/administration/website-service');
 const logger = require('../../common/logger');
 
-logger.debug('loading controller : /website')
+logger.info('loading controller : /website')
 
 module.exports = function(app) {
     // Get a website of a clients
