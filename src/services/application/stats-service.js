@@ -85,7 +85,7 @@ exports.get = (idWebsite, nbDays, user, res) => {
     },
     attributes: ms.WEBSITE.attributes,
     include: [
-      ms.VISITORS_WEBSITE.include(idWebsite, oldDate),
+      ms.VISITORS_WEBSITE.include(idWebsite, oldDate, nbDays),
       ms.MOST_VIEWED_PAGES.include(idWebsite, oldDate),
       ms.CRYPTO_MONEY.include(idWebsite, oldDate),
       ms.COUNTRY_RANKING.include(idWebsite, oldDate),

@@ -116,11 +116,13 @@ exports.CRYPTO_CURRENCY_WEBSITE.include = (idWebsite) => {return {
 // VISITORS_WEBSITE
 exports.VISITORS_WEBSITE.attributes = [
   'ID_WEBSITE',
-  [sequelize.fn('sum', sequelize.col('NB_MINER')), "NB_MINER_SUM"],
-  [sequelize.fn('sum', sequelize.col('AVERAGE_TIME')), "AVERAGE_TIME_SUM"],
-  [sequelize.fn('sum', sequelize.col('NB_VISITOR')), "NB_VISITOR_SUM"]
+  'NB_MINER',
+  "DATE_EVENT",
+  "AVERAGE_TIME",
+  'NB_VISITOR',
+
 ];
-exports.VISITORS_WEBSITE.include = (idWebsite, oldDate) => {return {
+exports.VISITORS_WEBSITE.include = (idWebsite, oldDate, nbDays) => {return {
   model: this.VISITORS_WEBSITE.model,
   attributes: this.VISITORS_WEBSITE.attributes,
   where: {
@@ -128,8 +130,8 @@ exports.VISITORS_WEBSITE.include = (idWebsite, oldDate) => {return {
       $gt: oldDate
     }
   },
-  group: 'ID_WEBSITE',
-  limit: 1
+  order: 'DATE_EVENT ASC',
+  limit: Number(nbDays)
 }};
 
 // MOST_VIEWED_PAGES
