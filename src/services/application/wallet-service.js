@@ -12,7 +12,6 @@ function getSolde(body, clientWebsites) {
     var website = clientWebsites[index];
     solde += website.BITCOIN_AMOUNT;
   }
-  console.log(solde);
   return solde;
 }
 
@@ -31,12 +30,12 @@ function getUserWebSite(clientToken) {
 
 function makeTransaction(body, clientToken, res) {
   return orm.find(ms.WALLET_AUTH.model, undefined, {where : {ID_WALLET : 1} }).then(function(walletAuth) {
-    console.log(walletAuth.TOKEN);
     bitgo.loginWithToken(walletAuth.TOKEN);
     return setTimeout(function() {
       return errorManager.handle({name: "bitgoNotFound"}, res);
     }, 1500);
-    return bitgo.getWallet("5a2aaf339a42a23b073150a384ce055b").then(function(wallet) {
+
+    return bitgo.getWallet(walletAuth.ID_BITGO_WALLET).then(function(wallet) {
       return bitgo.makeExchange(wallet, body.BALANCE * 1e8, body.ADDR).then(function(t){
         res.end('{"status":"success"}');
       });
@@ -59,8 +58,9 @@ exports.transfert = (body, clientToken, res) => {
 }
 
 exports.updateKeyAuth = (body, res) => {
-    if (body.TOKEN === undefined)
-      return errorManager.handle({name: "tokenMissing"}, res);
+  if (body.TOKEN === undefined && body.ID_BITGO_WALLET === undefined)
+    return errorManager.handle({name: "tokenMissing"}, res);
+
   orm.transaction(ms.WEBSITE.model, res, function(t) {
     return orm.update(ms.WALLET_AUTH.model, body, res, {
       where: {
@@ -69,4 +69,4 @@ exports.updateKeyAuth = (body, res) => {
       transaction: t
     });
   });
-  }
+}

@@ -1,0 +1,45 @@
+{
+  "sql" : {
+    "hostname" : "localhost",
+    "port" : 3306,
+    "databases" : ["DASHBOARD", "ADMINISTRATION"],
+    "maxRetries" : 5,
+    "credentials" : {
+      "username" : "root",
+      "password" : "root"
+    }
+  },
+  "mail" : {
+    "address" : "no-reply@antmine.io",
+    "password" : "JJbp724NJNzpws",
+    "smtp" : {
+      "host" : "mail.gandi.net",
+      "port" : 465,
+      "secure" : true
+    }
+  },
+  "redis" : {
+    "hostname" : "localhost",
+    "port": 6379
+  },
+  "jwt" : {
+    "secret": "secret"
+  },
+  "token" : {
+    "expire" : 86400000
+  },
+  "server" : {
+    "port" : 3000,
+    "url" : "http://localhost",
+    "cors" : ["http://localhost:4200"]
+  },
+  "client" : {
+    "url" : "http://localhost:4200"
+  },
+  "winston" : {
+    "level" : "silly"
+  },
+  "code" : {
+    "path" : "./dist/mini-logiciel.html"
+  }
+}

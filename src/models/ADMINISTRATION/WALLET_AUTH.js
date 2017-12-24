@@ -11,6 +11,10 @@ module.exports = function(sequelize, DataTypes) {
     TOKEN: {
       type: DataTypes.STRING(255),
       allowNull: false
+    },
+    ID_BITGO_WALLET: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     }
   }, {
     tableName: 'WALLET_AUTH',
