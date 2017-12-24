@@ -43,6 +43,8 @@ require('./controllers/administration/validation-controller')(app);
 
 // Dashboard
 require('./controllers/application/stats-controller')(app);
+require('./controllers/application/wallet-controller')(app);
+
 orm.initConnection();
 server.listen(port);
 logger.info(`App started on port ${port}`);

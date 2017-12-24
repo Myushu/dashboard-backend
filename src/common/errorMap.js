@@ -106,5 +106,40 @@ exports.map = [
     code: 204,
     message: 'The file is not a valid picture',
     statusCode: 400,
+  },
+  {
+    name: 'bitgoNotFound',
+    type: '',
+    code: 300,
+    message: 'Call the support Please',
+    statusCode: 503,
+  },
+  {
+    name: 'antmineNotFound',
+    type: '',
+    code: 301,
+    message: 'You don\'t have enough money to make this transaction',
+    statusCode: 503,
+  },
+  {
+    name: 'addrMissing',
+    type: '',
+    code: 302,
+    message: 'ADDR Missing',
+    statusCode: 503,
+  },
+  {
+    name: 'balanceMissing',
+    type: '',
+    code: 303,
+    message: 'BALANCE Missing',
+    statusCode: 503,
+  },
+  {
+    name: 'tokenMissing',
+    type: '',
+    code: 310,
+    message: 'TOKEN or ID_BITGO_WALLET Missing',
+    statusCode: 503,
   }
 ];
