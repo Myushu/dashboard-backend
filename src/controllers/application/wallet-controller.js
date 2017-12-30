@@ -1,7 +1,7 @@
 const service = require('../../services/application/wallet-service');
 const logger = require('../../common/logger');
 
-logger.debug('loading controller : /wallet')
+logger.info('loading controller : /wallet')
 
 module.exports = function(app) {
     // Get a client

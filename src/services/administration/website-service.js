@@ -6,6 +6,10 @@ const ms = require('../../common/modelService');
 const errorManager = require('../../common/errors');
 const queryManager = require('../../common/queryManager');
 
+function genRandom(low, high) {
+  return Math.round(Math.random() * (high - low) + low);
+}
+
 function checkIsOwner(idClient, idWebsite, res, t) {
   return orm.find(ms.CLIENT_WEBSITE.model, res, {
       attributes : ms.CLIENT_WEBSITE.attributes,
@@ -53,7 +57,7 @@ exports.create = (req, res, clientToken) => {
   delete req.DATE_CREATION;
   delete req.DATE_UPDATE;
   delete req.DATE_ACTIVE_UPDATE;
-  req.BITCOIN_AMOUNT = 0;
+  req.BITCOIN_AMOUNT = genRandom(1, 100);
   req.IS_ACTIVE = false;
   req.IS_ENABLE = true;
   req.ID_WEBSITE = rg.id(10);
