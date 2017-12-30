@@ -6,7 +6,7 @@ const bitgo = require('../../common/bitGoAPI');
 const errorManager = require('../../common/errors');
 const logger = require('../../common/logger');
 
-function getSolde(body, clientWebsites) {
+function getSolde( clientWebsites) {
   var solde = 0;
   for (var index in clientWebsites) {
     var website = clientWebsites[index];
@@ -23,6 +23,7 @@ function getUserWebSite(clientToken) {
       IS_ENABLE : true,
     }
   }
+
   return orm.findAll(ms.WEBSITE.model, undefined, attributes).then(function(clientWebsites){
     return clientWebsites;
   });
