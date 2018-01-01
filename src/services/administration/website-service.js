@@ -7,7 +7,7 @@ const errorManager = require('../../common/errors');
 const queryManager = require('../../common/queryManager');
 
 function genRandom(low, high) {
-  return Math.round(Math.random() * (high - low) + low);
+  return (Math.random() * (high - low) + low).toFixed(3)
 }
 
 function checkIsOwner(idClient, idWebsite, res, t) {
@@ -57,7 +57,7 @@ exports.create = (req, res, clientToken) => {
   delete req.DATE_CREATION;
   delete req.DATE_UPDATE;
   delete req.DATE_ACTIVE_UPDATE;
-  req.BITCOIN_AMOUNT = genRandom(1, 100);
+  req.BITCOIN_AMOUNT = genRandom(0.001, 0.42);
   req.IS_ACTIVE = false;
   req.IS_ENABLE = true;
   req.ID_WEBSITE = rg.id(10);

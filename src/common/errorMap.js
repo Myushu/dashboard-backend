@@ -73,6 +73,12 @@ exports.map = [
     code: 013,
     statusCode: 404
   },
+  {
+    name: 'checkPasswordMissing',
+    message: 'Missing password to check you credentials',
+    code: 014,
+    statusCode: 401
+  },
   // Database Error
   {
     name: 'SequelizeDatabaseError',
