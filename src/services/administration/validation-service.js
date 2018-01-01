@@ -1,4 +1,5 @@
 const orm = require('../../common/orm');
+const config = require('../../common/configManager');
 const mailManager = require('../../common/mailManager');
 const urlGenerator = require('../../common/urlGenerator');
 const ms = require("../../common/modelService")
@@ -10,8 +11,10 @@ exports.validateActivation = (uuid, res) => {
     orm.find(ms.ADMIN_CLIENT.model, undefined, {where: {EMAIL_ADDRESS: result.EMAIL_ADDRESS, ID_CLIENT: result.ID_CLIENT}}).then(function (client) {
       if (client == null)
         return res.sendStatus(400);
-      orm.update(ms.ADMIN_CLIENT.model, {'IS_VERIFIED': true}, res, {where: {'ID_CLIENT': result.ID_CLIENT}}).then(function () {
-        orm.delete(ms.CLIENT_URL_ACTIVATION.model, undefined, {where: {'UUID': uuid}});
+      return orm.update(ms.ADMIN_CLIENT.model, {'IS_VERIFIED': true}, undefined, {where: {'ID_CLIENT': result.ID_CLIENT}}).then(function () {
+        return orm.delete(ms.CLIENT_URL_ACTIVATION.model, undefined, {where: {'UUID': uuid}}).then(function () {
+          return res.redirect(config.get('URL', 'client.url'));
+        });
       });
     });
   });
