@@ -45,11 +45,14 @@ exports.update = (content, clientToken, res) => {
   delete content.IS_VERIFIED;
   delete content.IS_ENABLE;
   delete content.EMAIL_ADDRESS;
-  orm.transaction(ms.ADMIN_CLIENT.model, res, function(t) {
-    return orm.update(ms.ADMIN_CLIENT.model, content, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT}, transaction : t})
-      .then(function () {
-        return orm.update(ms.ADDRESS.model, content.ADDRESS, res, { where : {'ID_CLIENT' : clientToken.ID_CLIENT}, transaction : t});
+  checkPassword(content, clientToken, res).then(function (user) {
+    if (!user)
+      return errorManager.handle({name: "accountNotFound"}, res);
+    orm.transaction(ms.ADMIN_CLIENT.model, res, function(t) {
+      return orm.update(ms.ADMIN_CLIENT.model, content, undefined,{ where : {'ID_CLIENT' : user.ID_CLIENT}, transaction : t}).then(function () {
+          return orm.update(ms.ADDRESS.model, content.ADDRESS, res, { where : {'ID_CLIENT' : user.ID_CLIENT}, transaction : t});
       });
+    })
   });
 }
 
@@ -85,9 +88,15 @@ exports.checkAuthentication = (body, res) => {
   else if (body.HASH_PASSWORD === undefined)
     errorManager.handle({name: "passwordMissing"}, res);
   else
-    return orm.find(ms.ADMIN_CLIENT.model, undefined, {where : body}).then(function (result) {
+    return orm.find(ms.ADMIN_CLIENT.model, undefined, {where: body}).then(function (result) {
       return result;
     })
+}
+
+function checkPassword(body, clientToken, res) {
+  if (body.CHECK_PASSWORD === undefined)
+    return errorManager.handle({name: "checkPasswordMissing"}, res);
+  return orm.find(ms.ADMIN_CLIENT.model, undefined, { where : {'ID_CLIENT' : clientToken.ID_CLIENT, 'HASH_PASSWORD': body.CHECK_PASSWORD}});
 }
 
 function tokenGenerator(result, res) {
