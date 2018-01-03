@@ -23,6 +23,9 @@ exports.create = (req, res) => {
   delete req.ID_CLIENT;
   req.IS_VERIFIED = false;
   req.IS_ENABLE = true;
+  if (Date.parse(req.DATE_BIRTHDAY) >= Date.now()) {
+    return res.sendStatus(errorManager.handle({name: "InvalidDate"}, res));
+  }
   if (typeof req.ADDRESS !== 'object')
     return res.sendStatus(400);
   orm.transaction(ms.ADMIN_CLIENT.model, res, function(t) {

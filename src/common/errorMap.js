@@ -79,6 +79,12 @@ exports.map = [
     code: 014,
     statusCode: 401
   },
+  {
+    name: 'InvalidDate',
+    message: 'date invalide',
+    code: 015,
+    statusCode: 401
+  },
   // Database Error
   {
     name: 'SequelizeDatabaseError',
@@ -117,14 +123,14 @@ exports.map = [
     name: 'bitgoNotFound',
     type: '',
     code: 300,
-    message: 'Call the support Please',
+    message: 'Veuillez contacter le support contact@antmine.io',
     statusCode: 503,
   },
   {
     name: 'antmineNotFound',
     type: '',
     code: 301,
-    message: 'You don\'t have enough money to make this transaction',
+    message: 'La somme demandée est supérieure à votre solde actuel',
     statusCode: 503,
   },
   {
